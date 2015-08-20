@@ -16,11 +16,14 @@ namespace StatsImporter.Importers
 		}
 
 		private NbaGames _gamesPlayed;
+		private string _season;
 
-		public override bool SetConfiguration(string config)
+		public override bool SetConfiguration(string config, string season)
 		{
-			if (string.IsNullOrWhiteSpace(config))
+			if (string.IsNullOrWhiteSpace(config) || string.IsNullOrWhiteSpace(season))
 				return false;
+
+			_season = season;
 
 			int val;
 			if (int.TryParse(config, out val))
@@ -70,7 +73,10 @@ namespace StatsImporter.Importers
 
 		private string GetUrl()
 		{
-			var builder = new NbaUrlBuilder();
+			var builder = new NbaUrlBuilder
+			{
+				Season = _season
+			};
 
 			switch (_gamesPlayed)
 			{

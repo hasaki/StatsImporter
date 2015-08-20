@@ -15,7 +15,7 @@ namespace StatsImporter
 	{
 		static int Main(string[] args)
 		{
-			if (args.Length < 2)
+			if (args.Length < 3)
 			{
 				WriteHelp();
 				return -1;
@@ -32,9 +32,10 @@ namespace StatsImporter
 			}
 
 			var config = args[1];
+			var season = args[2];
 
 			var import = ImporterFactory.GetImporterForSport(sport);
-			if (!import.SetConfiguration(config))
+			if (!import.SetConfiguration(config, season))
 			{
 				Console.WriteLine($"Invalid configuration '{config}'");
 				WriteHelp();
@@ -75,10 +76,11 @@ StatsImporter
 
 Command line usage:
 
-StatsImporter <sport> <configName>
+StatsImporter <sport> <configName> <season>
 
--<sport>: the sport to import statistics for, such as NBA
--<configName>: 'pre', 'last10', 'last15', or 'post'";
+<sport>: the sport to import statistics for, such as NBA
+<configName>: 'pre', 'last10', 'last15', or 'post'
+<season>: the season string for the given sport, nba for example uses '2014-15' as its season name";
 
 			Console.WriteLine(text);
 		}

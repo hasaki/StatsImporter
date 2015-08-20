@@ -8,11 +8,11 @@ namespace StatsImporter
 	{
 		protected UrlBuilder()
 		{
-			Filters = new Dictionary<string, object>(StringComparer.CurrentCultureIgnoreCase);
+			Filters = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
 		}
 
 		protected string BaseUrl { get; set; }
-		protected Dictionary<string, object> Filters { get; private set; }
+		protected Dictionary<string, string> Filters { get; private set; }
 
 		protected string GetQueryStringFromFilters()
 		{
@@ -64,14 +64,20 @@ namespace StatsImporter
 
 		public string LastNGames
 		{
-			get { return Filters["LastNGames"].ToString(); }
+			get { return Filters["LastNGames"]; }
 			set { Filters["LastNGames"] = value; }
 		}
 
 		public string SeasonType
 		{
-			get { return Filters["SeasonType"].ToString(); }
+			get { return Filters["SeasonType"]; }
 			set { Filters["SeasonType"] = value; }
+		}
+
+		public string Season
+		{
+			get { return Filters["Season"]; }
+			set { Filters["Season"] = value; }
 		}
 	}
 }

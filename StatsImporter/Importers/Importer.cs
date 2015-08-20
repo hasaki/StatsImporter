@@ -7,7 +7,7 @@ namespace StatsImporter.Importers
 	{
 		protected Importer() { }
 
-		public abstract bool SetConfiguration(string config);
+		public abstract bool SetConfiguration(string config, string season);
 
 		public abstract IList<Dictionary<string, object>> Import();
 
