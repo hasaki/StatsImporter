@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StatsImporter.Importers
 {
@@ -14,6 +10,7 @@ namespace StatsImporter.Importers
 			{
 				case AllowedSports.Nba:
 					return new NbaImporter();
+
 				default:
 					throw new ArgumentOutOfRangeException(nameof(sport), sport, null);
 			}
