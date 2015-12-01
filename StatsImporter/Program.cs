@@ -16,18 +16,17 @@ namespace StatsImporter
 				return -1;
 			}
 
-			AllowedSports sport;
+			var sportText = args[0]; // NBA (for now)
+			var config = args[1]; // Last10, Last15, All, or Playoffs
+			var season = args[2]; // 2014, 2015, 2016, etc..
 
-			var sportText = args[0];
+			AllowedSports sport;
 			if (!Enum.TryParse(sportText, true, out sport))
 			{
 				Console.WriteLine($"Invalid sport name '{sportText}'");
 				WriteHelp();
 				return -1;
 			}
-
-			var config = args[1];
-			var season = args[2];
 
 			var import = ImporterFactory.GetImporterForSport(sport);
 			if (!import.SetConfiguration(config, season))
