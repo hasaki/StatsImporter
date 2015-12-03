@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace StatsImporter
 {
 	public class TsvEncoder
 	{
-		public string Encode(IEnumerable<Dictionary<string, object>> data)
+		public static string Encode(IEnumerable<Dictionary<string, object>> data)
 		{
 			var sb = new StringBuilder();
 
@@ -17,6 +14,7 @@ namespace StatsImporter
 			{
 				if (!firstRow)
 					sb.AppendLine();
+
 				firstRow = false;
 
 				var firstItem = true;
@@ -24,6 +22,7 @@ namespace StatsImporter
 				{
 					if (!firstItem)
 						sb.Append("\t");
+
 					sb.Append($"{kvp.Value}");
 
 					firstItem = false;

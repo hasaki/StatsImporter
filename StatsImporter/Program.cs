@@ -6,14 +6,9 @@ using StatsImporter.Importers;
 
 namespace StatsImporter
 {
-	public enum AllowedSports
+	public static class Program
 	{
-		Nba
-	}
-
-	public class Program
-	{
-		static int Main(string[] args)
+		public static int Main(string[] args)
 		{
 			if (args.Length < 3)
 			{
@@ -21,18 +16,17 @@ namespace StatsImporter
 				return -1;
 			}
 
-			AllowedSports sport;
+			var sportText = args[0]; // NBA (for now)
+			var config = args[1]; // Last10, Last15, All, or Playoffs
+			var season = args[2]; // 2014-15, 2015-16, 2016-17, etc..
 
-			var sportText = args[0];
+			AllowedSports sport;
 			if (!Enum.TryParse(sportText, true, out sport))
 			{
 				Console.WriteLine($"Invalid sport name '{sportText}'");
 				WriteHelp();
 				return -1;
 			}
-
-			var config = args[1];
-			var season = args[2];
 
 			var import = ImporterFactory.GetImporterForSport(sport);
 			if (!import.SetConfiguration(config, season))
@@ -49,11 +43,8 @@ namespace StatsImporter
 			try
 			{
 				var data = import.Import() ?? GetErrorMessage("Data returned from website in unexpected format");
-
-				var encoder = new TsvEncoder();
-				var outputText = encoder.Encode(data);
-
-				File.WriteAllText(filePath, outputText);
+				var text = TsvEncoder.Encode(data);
+				File.WriteAllText(filePath, text);
 			}
 			catch (Exception e)
 			{
@@ -64,12 +55,12 @@ namespace StatsImporter
 			return 0;
 		}
 
-		static IList<Dictionary<string, object>> GetErrorMessage(string errMsg)
+		private static IList<Dictionary<string, object>> GetErrorMessage(string errMsg)
 		{
 			return new List<Dictionary<string, object>> { new Dictionary<string, object> { { "ErrorMessage", errMsg } } };
-		} 
+		}
 
-		static void WriteHelp()
+		private static void WriteHelp()
 		{
 			var text = @"
 StatsImporter
@@ -85,7 +76,7 @@ StatsImporter <sport> <configName> <season>
 			Console.WriteLine(text);
 		}
 
-		static string GetOutputDirPath()
+		private static string GetOutputDirPath()
 		{
 			var settings = ConfigurationManager.AppSettings;
 

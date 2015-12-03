@@ -41,21 +41,29 @@ namespace StatsImporter.Importers
 			var jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonString);
 
 			var resultSets = jsonDictionary["resultSets"] as JArray;
+			if (resultSets == null)
+				throw new InvalidOperationException("Resultsets is null");
+
 			var resultSet = resultSets[0] as JObject;
+			if (resultSet == null)
+				throw new InvalidOperationException("Resultset is null");
 
 			var headers = resultSet["headers"] as JArray;
+			if (headers == null)
+				throw new InvalidOperationException("Resultset headers are null");
+
 			var rows = resultSet["rowSet"] as JArray;
+			if (rows == null)
+				throw new InvalidOperationException("Resultset rows are null");
 
 			var result = new List<Dictionary<string, object>>();
-
 			var row = new Dictionary<string, object>();
 			foreach (var header in headers)
-			{
 				row[header.ToString()] = header.ToString();
-			}
+
 			result.Add(row);
 
-			foreach (JArray jRow in rows)
+			foreach (var jRow in rows)
 			{
 				row = new Dictionary<string, object>();
 				var index = 0;
@@ -81,7 +89,7 @@ namespace StatsImporter.Importers
 			switch (_gamesPlayed)
 			{
 				case NbaGames.Last10:
-					builder.LastNGames = "10";
+					builder.LastNGames = "8";
 					break;
 				case NbaGames.Last15:
 					builder.LastNGames = "15";
